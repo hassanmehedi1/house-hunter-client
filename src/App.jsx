@@ -4,7 +4,8 @@ import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
 import DashLayout from "./components/DashLayout";
 import Welcome from "./features/auth/Welcome";
-import House from "./features/houses/House";
+// import House from "./features/houses/House";
+import HousesList from "./features/houses/HouseList";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
           <Route index element={<Welcome />} />
 
           <Route path="houses">
-            <Route index element={<House />} />
+            <Route index element={<HousesList />} />
           </Route>
         </Route>
         {/*  End Dash   */}
