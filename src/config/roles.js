@@ -1,0 +1,4 @@
+export const ROLES = {
+  HOUSE_OWNER: "HOUSE_OWNER",
+  HOUSE_RENTER: "HOUSE_RENTER",
+};

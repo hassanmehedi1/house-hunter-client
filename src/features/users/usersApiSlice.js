@@ -21,10 +21,20 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         return usersAdapter.setAll(initialState, loadedUsers);
       },
     }),
+    addNewUser: builder.mutation({
+      query: (initialUserData) => ({
+        url: "/users",
+        method: "POST",
+        body: {
+          ...initialUserData,
+        },
+      }),
+      invalidatesTags: [{ type: "User", id: "LIST" }],
+    }),
   }),
 });
 
-export const { useGetUsersQuery } = usersApiSlice;
+export const { useGetUsersQuery, useAddNewUserMutation } = usersApiSlice;
 
 // returns the query result object
 export const selectUsersResult = usersApiSlice.endpoints.getUsers.select();

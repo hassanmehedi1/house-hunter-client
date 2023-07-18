@@ -16,18 +16,20 @@ const Navbar = () => {
           <h1>House Hunter</h1>
         </Link>
         <div className="flex md:order-2">
-          <button
+          <Link
+          to="/login"
             type="button"
             className="text-white  bg-gray-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-6 py-3 text-center mr-3 md:mr-6"
           >
             Login
-          </button>
-          <button
+          </Link>
+          <Link
+          to="/signup"
             type="button"
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-6 py-3 text-center mr-3 md:mr-0"
           >
             Sign Up
-          </button>
+          </Link>
 
           <button
             data-collapse-toggle="navbar-sticky"

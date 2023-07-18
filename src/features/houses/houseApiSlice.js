@@ -29,10 +29,44 @@ export const housesApiSlice = apiSlice.injectEndpoints({
         } else return [{ type: "House", id: "LIST" }];
       },
     }),
+    addNewHouse: builder.mutation({
+      query: (initialHouse) => ({
+        url: "/houses",
+        method: "POST",
+        body: {
+          ...initialHouse,
+        },
+      }),
+      invalidatesTags: [{ type: "House", id: "LIST" }],
+    }),
+
+    updateHouse: builder.mutation({
+      query: (initialHouse) => ({
+        url: "/houses",
+        method: "PATCH",
+        body: {
+          ...initialHouse,
+        },
+      }),
+      invalidatesTags: (result, error, arg) => [{ type: "House", id: arg.id }],
+    }),
+    deleteHouse: builder.mutation({
+      query: ({ id }) => ({
+        url: `/houses`,
+        method: "DELETE",
+        body: { id },
+      }),
+      invalidatesTags: (result, error, arg) => [{ type: "House", id: arg.id }],
+    }),
   }),
 });
 
-export const { useGetHousesQuery } = housesApiSlice;
+export const {
+  useGetHousesQuery,
+  useAddNewHouseMutation,
+  useUpdateHouseMutation,
+  useDeleteHouseMutation,
+} = housesApiSlice;
 
 // returns the query result object
 export const selectHousesResult = housesApiSlice.endpoints.getHouses.select();
