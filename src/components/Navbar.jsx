@@ -1,15 +1,20 @@
 /* eslint-disable react/prop-types */
 // import { useState } from "react";
 
+import { Link } from "react-router-dom";
+
 const Navbar = () => {
   //   const [open, setOpen] = useState(false);
 
   return (
     <nav className="bg-gray-900 fixed w-full z-20 top-0 left-0 border-b border-gray-600">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <a href="https://flowbite.com/" className="flex items-center text-white font-semibold text-2xl">
+        <Link
+          to="/"
+          className="flex items-center text-white font-semibold text-2xl"
+        >
           <h1>House Hunter</h1>
-        </a>
+        </Link>
         <div className="flex md:order-2">
           <button
             type="button"
@@ -23,7 +28,6 @@ const Navbar = () => {
           >
             Sign Up
           </button>
-
 
           <button
             data-collapse-toggle="navbar-sticky"
