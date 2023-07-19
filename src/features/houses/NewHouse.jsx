@@ -1,12 +1,17 @@
-import { useSelector } from "react-redux";
-import { selectAllUsers } from "../users/usersApiSlice";
 import NewHouseForm from "./NewHouseForm";
+import { useGetUsersQuery } from "../users/usersApiSlice";
+import { Spinner } from "@chakra-ui/react";
 
 const NewHouse = () => {
-  const users = useSelector(selectAllUsers);
-  console.log(users);
+  const { users } = useGetUsersQuery("usersList", {
+    selectFromResult: ({ data }) => ({
+      users: data?.ids.map((id) => data?.entities[id]),
+    }),
+  });
 
-  const content = users ? <NewHouseForm users={users} /> : <p>Loading...</p>;
+  if (!users?.length) return <Spinner size="lg" />;
+
+  const content = <NewHouseForm users={users} />;
 
   return content;
 };

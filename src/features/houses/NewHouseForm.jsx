@@ -12,12 +12,12 @@ const NewHouseForm = ({ users }) => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
-  const [bedrooms, setBedrooms] = useState(0);
-  const [bathrooms, setBathrooms] = useState(0);
+  const [bedrooms, setBedrooms] = useState();
+  const [bathrooms, setBathrooms] = useState();
   const [roomSize, setRoomSize] = useState("");
   const [picture, setPicture] = useState("");
   const [availabilityDate, setAvailabilityDate] = useState("");
-  const [rentPerMonth, setRentPerMonth] = useState(0);
+  const [rentPerMonth, setRentPerMonth] = useState();
   const [phoneNumber, setPhoneNumber] = useState("+880");
   const [description, setDescription] = useState("");
   const [userId, setUserId] = useState(users[0].id);
@@ -27,12 +27,12 @@ const NewHouseForm = ({ users }) => {
       setName("");
       setAddress("");
       setCity("");
-      setBedrooms(0);
-      setBathrooms(0);
+      setBedrooms();
+      setBathrooms();
       setRoomSize("");
       setPicture("");
       setAvailabilityDate("");
-      setRentPerMonth(0);
+      setRentPerMonth();
       setPhoneNumber("+880");
       setDescription("");
       setUserId("");
@@ -72,20 +72,7 @@ const NewHouseForm = ({ users }) => {
   const onSaveHouseClicked = async (e) => {
     e.preventDefault();
     if (canSave) {
-      // await addNewHouse({
-      //   name,
-      //   address,
-      //   city,
-      //   bedrooms,
-      //   bathrooms,
-      //   roomSize,
-      //   picture,
-      //   availabilityDate,
-      //   rentPerMonth,
-      //   phoneNumber,
-      //   description,
-      // });
-      console.log({
+      await addNewHouse({
         user: userId,
         name,
         address,
@@ -96,9 +83,23 @@ const NewHouseForm = ({ users }) => {
         picture,
         availabilityDate,
         rentPerMonth,
-        phoneNumber,
+        phoneNumber: `+880${phoneNumber}`,
         description,
       });
+      // console.log({
+      //   user: userId,
+      //   name,
+      //   address,
+      //   city,
+      //   bedrooms,
+      //   bathrooms,
+      //   roomSize,
+      //   picture,
+      //   availabilityDate,
+      //   rentPerMonth,
+      //   phoneNumber: `+880${phoneNumber}`,
+      //   description,
+      // });
     }
   };
 
@@ -120,11 +121,13 @@ const NewHouseForm = ({ users }) => {
           className="bg-white shadow-md rounded px-8 py-6"
           onSubmit={onSaveHouseClicked}
         >
-          <h2 className="text-2xl font-bold mb-6 text-center">Add New House</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">
+            Add New House
+          </h2>
 
           <div className="mb-4">
             <label className="block font-semibold mb-2" htmlFor="userEmail">
-              *
+              Select Your Mail
             </label>
             <select
               id="userEmail"
@@ -294,9 +297,8 @@ const NewHouseForm = ({ users }) => {
                 name="phoneNumber"
                 type="tel"
                 pattern="[0-9]{10}"
-                value={phoneNumber.replace("+880", "")}
+                value={phoneNumber}
                 onChange={onPhoneNumberChanged}
-                required
               />
             </div>
           </div>

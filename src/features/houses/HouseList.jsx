@@ -9,8 +9,12 @@ import {
   TableCaption,
   TableContainer,
 } from "@chakra-ui/react";
+import useAuth from "../../hooks/useAuth";
+import { Link } from "react-router-dom";
 
 const HousesList = () => {
+  const { email } = useAuth();
+
   const {
     data: houses,
     isLoading,
@@ -28,16 +32,27 @@ const HousesList = () => {
   }
 
   if (isSuccess) {
-    const { ids } = houses;
+    const { ids, entities } = houses;
 
-    const tableContent = ids?.length
-      ? ids.map((houseId) => <House key={houseId} houseId={houseId} />)
-      : null;
+    let filteredIds = ids.filter(
+      (houseId) => entities[houseId].email === email
+    );
+
+    const tableContent =
+      ids?.length &&
+      filteredIds.map((houseId) => <House key={houseId} houseId={houseId} />);
 
     content = (
       <TableContainer>
         <Table variant="simple">
-          <TableCaption>House List</TableCaption>
+          <TableCaption>
+            <Link
+              to="new-house"
+              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg"
+            >
+              Add New House
+            </Link>
+          </TableCaption>
           <Thead>
             <Tr>
               <Th>Name</Th>

@@ -9,10 +9,12 @@ const initialState = housesAdapter.getInitialState();
 export const housesApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getHouses: builder.query({
-      query: () => "/houses",
-      validateStatus: (response, result) => {
-        return response.status === 200 && !result.isError;
-      },
+      query: () => ({
+        url: "/houses",
+        validateStatus: (response, result) => {
+          return response.status === 200 && !result.isError;
+        },
+      }),
       transformResponse: (responseData) => {
         const loadedHouses = responseData.map((house) => {
           house.id = house._id;

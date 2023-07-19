@@ -46,9 +46,14 @@ const DashHeader = () => {
       <div
         className={`container mx-auto flex items-center justify-between ${dashClass}`}
       >
-        <Link to="/dash">
-          <h1 className="text-blue-600 text-2xl font-bold">Dashboard</h1>
-        </Link>
+        <div className="flex items-center gap-6">
+          <Link to="/dash">
+            <h1 className="text-blue-600 text-2xl font-bold">Dashboard</h1>
+          </Link>
+          <Link to="/">
+            <h1 className="text-cyan-400 text-2xl font-bold ">Home</h1>
+          </Link>
+        </div>
         <nav className="">
           {/* add more buttons later */}
           {logoutButton}

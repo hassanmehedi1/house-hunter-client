@@ -2,9 +2,10 @@
 // import { useState } from "react";
 
 import { Link } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const Navbar = () => {
-  //   const [open, setOpen] = useState(false);
+  const { email } = useAuth();
 
   return (
     <nav className="bg-gray-900 fixed w-full z-20 top-0 left-0 border-b border-gray-600">
@@ -16,20 +17,34 @@ const Navbar = () => {
           <h1>House Hunter</h1>
         </Link>
         <div className="flex md:order-2">
-          <Link
-          to="/login"
-            type="button"
-            className="text-white  bg-gray-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-6 py-3 text-center mr-3 md:mr-6"
-          >
-            Login
-          </Link>
-          <Link
-          to="/signup"
-            type="button"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-6 py-3 text-center mr-3 md:mr-0"
-          >
-            Sign Up
-          </Link>
+          {!email && (
+            <Link
+              to="/login"
+              type="button"
+              className="text-white  bg-gray-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-6 py-3 text-center mr-3 md:mr-6"
+            >
+              Login
+            </Link>
+          )}
+          {!email && (
+            <Link
+              to="/signup"
+              type="button"
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-6 py-3 text-center mr-3 md:mr-0"
+            >
+              Sign Up
+            </Link>
+          )}
+
+          {email && (
+            <Link
+              to="/dash"
+              type="button"
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-6 py-3 text-center mr-3 md:mr-0"
+            >
+              Dashboard
+            </Link>
+          )}
 
           <button
             data-collapse-toggle="navbar-sticky"
