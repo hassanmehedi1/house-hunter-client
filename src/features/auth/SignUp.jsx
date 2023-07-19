@@ -46,7 +46,13 @@ const SignUp = () => {
   const onSaveUserClicked = async (e) => {
     e.preventDefault();
     if (canSave) {
-      await addNewUser({ email, password, roles, phone: `+880${phoneNumber}`, fullName });
+      await addNewUser({
+        email,
+        password,
+        roles,
+        phone: `+880${phoneNumber}`,
+        fullName,
+      });
       // console.log(email, password, roles, `+880${phoneNumber}`, fullName);
     }
   };
@@ -68,7 +74,9 @@ const SignUp = () => {
           className="bg-white shadow-md rounded px-8 py-6"
           onSubmit={onSaveUserClicked}
         >
-          <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">
+            Sign Up
+          </h2>
 
           <div className="mb-4">
             <label className="block font-semibold mb-2" htmlFor="name">
@@ -135,7 +143,7 @@ const SignUp = () => {
 
           <div className="mb-4">
             <label className="block font-semibold mb-2" htmlFor="roles">
-              Assigned Roles:
+              Who Are You:
             </label>
             <select
               id="roles"

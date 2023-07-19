@@ -169,52 +169,7 @@ a {
   height: auto;
 }
 
-
 /* || TABLES - GENERAL */
-
-thead,
-tbody,
-tr {
-  display: contents;
-}
-
-.table {
-  font-size: 1rem;
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-  color: var(--TABLE-COLOR);
-  gap: 0.1em;
-}
-
-.table__button {
-  padding: 0.25em;
-  font-size: 1.5rem;
-  color: var(--TABLE-COLOR);
-}
-
-.table__thead {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-
-.table__th,
-.table__cell {
-  background-color: var(--TABLE-BGCOLOR);
-  text-align: left;
-  border: 1px solid var(--TABLE-COLOR);
-  padding: 0.5em;
-}
-
-.table__cell:last-child {
-  display: grid;
-  place-content: center;
-}
-
-.table__cell--inactive {
-  background-color: var(--INACTIVE);
-}
 
 /* ||  HOUSE */
 
@@ -235,7 +190,6 @@ tr {
 .house__status--completed {
   color: var(--STATUS-COMPLETE);
 }
-
 
 /* || FORM - GENERAL */
 
@@ -280,7 +234,6 @@ tr {
   border: 1px solid red;
   outline: 1px solid red;
 }
-
 
 .form__checkbox {
   width: 24px;
@@ -328,7 +281,6 @@ tr {
 }
 
 @media screen and (min-width: 768px) {
-
   body {
     font-size: 1.25rem;
   }
@@ -352,7 +304,7 @@ tr {
   .house__created,
   .house__updated,
   .house__username {
-    display: block
+    display: block;
   }
 
   .form__action-buttons {

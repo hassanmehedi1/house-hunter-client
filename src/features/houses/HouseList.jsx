@@ -1,5 +1,14 @@
 import { useGetHousesQuery } from "./houseApiSlice";
 import House from "./House";
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  TableCaption,
+  TableContainer,
+} from "@chakra-ui/react";
 
 const HousesList = () => {
   const {
@@ -26,34 +35,26 @@ const HousesList = () => {
       : null;
 
     content = (
-      <table className="table table--houses">
-        <thead className="table__thead">
-          <tr>
-            <th scope="col" className="table__th house__status">
-              Name
-            </th>
-            <th scope="col" className="table__th house__created">
-              Created
-            </th>
-            <th scope="col" className="table__th house__updated">
-              Updated
-            </th>
-            <th scope="col" className="table__th house__title">
-              City
-            </th>
-            <th scope="col" className="table__th house__username">
-              Address
-            </th>
-            <th scope="col" className="table__th house__edit">
-              Edit
-            </th>
-          </tr>
-        </thead>
-        <tbody>{tableContent}</tbody>
-      </table>
+      <TableContainer>
+        <Table variant="simple">
+          <TableCaption>House List</TableCaption>
+          <Thead>
+            <Tr>
+              <Th>Name</Th>
+              <Th>Address</Th>
+              <Th isNumeric>Bed Rooms</Th>
+              <Th>Room Size</Th>
+              <Th isNumeric>Rent</Th>
+              <Th>Action</Th>
+            </Tr>
+          </Thead>
+          <Tbody>{tableContent}</Tbody>
+        </Table>
+      </TableContainer>
     );
   }
 
   return content;
 };
+
 export default HousesList;

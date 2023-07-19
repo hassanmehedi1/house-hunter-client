@@ -1,54 +1,34 @@
 /* eslint-disable react/prop-types */
-
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectHouseById } from "./houseApiSlice";
+import { Td, Tr } from "@chakra-ui/react";
 
 const House = ({ houseId }) => {
   const house = useSelector((state) => selectHouseById(state, houseId));
-
   const navigate = useNavigate();
 
-  if (house) {
-    const created = new Date(house.createdAt).toLocaleString("en-US", {
-      day: "numeric",
-      month: "long",
-    });
+  const handleEdit = () => navigate(`/dash/houses/${houseId}`);
 
-    const updated = new Date(house.updatedAt).toLocaleString("en-US", {
-      day: "numeric",
-      month: "long",
-    });
+  if (!house) return null;
 
-    // name,
-    // address,
-    // city,
-    // bedrooms,
-    // bathrooms,
-    // roomSize,
-    // picture,
-    // availabilityDate,
-    // rentPerMonth,
-    // phoneNumber,
-    // description,
-
-    const handleEdit = () => navigate(`/dash/houses/${houseId}`);
-
-    return (
-      <tr className="table__row">
-        <td className="table__cell house__status">{house.name}</td>
-        <td className="table__cell house__created">{created}</td>
-        <td className="table__cell house__updated">{updated}</td>
-        <td className="table__cell house__title">{house.city}</td>
-        <td className="table__cell house__username">{house.address}</td>
-
-        <td className="table__cell">
-          <button className="icon-button table__button" onClick={handleEdit}>
-            Edit
-          </button>
-        </td>
-      </tr>
-    );
-  } else return null;
+  return (
+    <Tr>
+      <Td>{house.name}</Td>
+      <Td>{house.address}</Td>
+      <Td isNumeric>{house.bedrooms}</Td>
+      <Td>{house.roomSize}</Td>
+      <Td isNumeric>{house.rentPerMonth}</Td>
+      <Td>
+        <button
+          onClick={handleEdit}
+          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg"
+        >
+          Edit
+        </button>
+      </Td>
+    </Tr>
+  );
 };
+
 export default House;

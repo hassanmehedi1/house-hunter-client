@@ -11,7 +11,7 @@ import SignUp from "./features/auth/SignUp";
 import EditHouse from "./features/houses/EditHouse";
 import Prefetch from "./features/auth/Prefetch";
 import NewHouse from "./features/houses/NewHouse";
-import UsersList from "./features/users/UserList";
+import PersistLogin from "./features/auth/PersistLogin";
 
 function App() {
   return (
@@ -22,22 +22,22 @@ function App() {
         <Route path="login" element={<Login />}></Route>
         <Route path="signup" element={<SignUp />}></Route>
 
-        <Route element={<Prefetch />}>
-          <Route path="dash" element={<DashLayout />}>
-            <Route index element={<Welcome />} />
+        <Route element={<PersistLogin />}>
+          <Route element={<Prefetch />}>
+            <Route path="dash" element={<DashLayout />}>
+              <Route index element={<Welcome />} />
 
-            <Route path="users">
-              <Route index element={<UsersList />} />
+              <Route path="houses">
+                <Route index element={<HousesList />} />
+                <Route path=":id" element={<EditHouse />} />
+                <Route path="new-house" element={<NewHouse />} />
+              </Route>
             </Route>
-
-            <Route path="houses">
-              <Route index element={<HousesList />} />
-              <Route path=":id" element={<EditHouse />} />
-              <Route path="new-house" element={<NewHouse />} />
-            </Route>
+            {/*  End Dash   */}
           </Route>
-          {/*  End Dash   */}
         </Route>
+
+        {/* ----  */}
       </Routes>
     </>
   );

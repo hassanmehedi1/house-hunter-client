@@ -1,9 +1,12 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { BsFillHouseDoorFill } from "react-icons/bs";
+import useAuth from "../hooks/useAuth";
 
 const DashFooter = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
+  const { email, status } = useAuth();
 
   const onGoHomeClicked = () => navigate("/dash");
 
@@ -23,8 +26,8 @@ const DashFooter = () => {
   const content = (
     <footer className="dash-footer text-white">
       {goHomeButton}
-      <p>Current User:</p>
-      <p>Status:</p>
+      <p>Current User: {email}</p>
+      <p>Status: {status}</p>
     </footer>
   );
   return content;

@@ -1,9 +1,9 @@
 import { useRef, useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-
 import { useDispatch } from "react-redux";
 import { setCredentials } from "./authSlice";
 import { useLoginMutation } from "./authApiSlice";
+import usePersist from "../../hooks/usePersist";
 
 const Login = () => {
   const userRef = useRef();
@@ -11,6 +11,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [persist, setPersist] = usePersist();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -54,47 +55,87 @@ const Login = () => {
 
   if (isLoading) return <p>Loading...</p>;
 
-  const content = (
-    <section className="public mt-32">
-      <header>
-        <h1>Login</h1>
-      </header>
-      <main className="login">
-        <p ref={errRef} className={errClass} aria-live="assertive">
+  return (
+    <section className="flex flex-col items-center justify-center min-h-screen ">
+      <div className="bg-white rounded-lg shadow-lg p-8 max-w-sm w-full">
+        <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">
+          Login
+        </h1>
+        <p ref={errRef} className={`mb-4 ${errClass}`} aria-live="assertive">
           {errMsg}
         </p>
-
-        <form className="form" onSubmit={handleSubmit}>
-          <label htmlFor="email">Email:</label>
-          <input
-            className="form__input"
-            type="text"
-            id="email"
-            ref={userRef}
-            value={email}
-            onChange={handleUserInput}
-            autoComplete="off"
-            required
-          />
-
-          <label htmlFor="password">Password:</label>
-          <input
-            className="form__input"
-            type="password"
-            id="password"
-            onChange={handlePwdInput}
-            value={password}
-            required
-          />
-          <button className="form__submit-button">Sign In</button>
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          <div className="flex flex-col">
+            <label htmlFor="email" className="mb-1 text-gray-600">
+              Email:
+            </label>
+            <input
+              className="border rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              type="text"
+              id="email"
+              ref={userRef}
+              value={email}
+              onChange={handleUserInput}
+              autoComplete="off"
+              required
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="password" className="mb-1 text-gray-600">
+              Password:
+            </label>
+            <input
+              className="border rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              type="password"
+              id="password"
+              onChange={handlePwdInput}
+              value={password}
+              required
+            />
+          </div>
+          <button
+            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+            type="submit"
+          >
+            Sign In
+          </button>
+          <div className=" items-center hidden">
+            <input
+              type="checkbox"
+              className="form-checkbox border-gray-400 rounded text-blue-600 cursor-pointer"
+              id="persist"
+              checked={true} // Always checked
+              readOnly={true} // Set to readonly
+              onChange={() => setPersist(!persist)} // No need for handleToggle, since it's readonly
+            />
+            <label
+              htmlFor="persist"
+              className="ml-2 text-gray-600 cursor-pointer"
+            >
+              Trust This Device
+            </label>
+          </div>
         </form>
-      </main>
-      <footer>
-        <Link to="/">Back to Home</Link>
-      </footer>
+        <footer className="mt-6 text-center">
+          <Link
+            to="/"
+            className="text-blue-600 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            Back to Home
+          </Link>
+
+          <footer className="mt-6 text-center">
+            <Link
+              to="/signup"
+              className="text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
+              <span className="text-black">New to House Hunter?</span> Sign Up
+            </Link>
+          </footer>
+        </footer>
+      </div>
     </section>
   );
-
-  return content;
 };
+
 export default Login;
