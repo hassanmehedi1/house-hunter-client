@@ -1,44 +1,40 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import { useAddNewHouseMutation } from "../houses/houseApiSlice";
+import {
+  useUpdateHouseMutation,
+  useDeleteHouseMutation,
+} from "./houseApiSlice";
 import { useNavigate } from "react-router-dom";
 
-const NewHouseForm = ({ users }) => {
-  const [addNewHouse, { isLoading, isSuccess, isError, error }] =
-    useAddNewHouseMutation();
+const EditHouseForm = ({ house }) => {
+  const [updateHouse, { isLoading, isSuccess, isError, error }] =
+    useUpdateHouseMutation();
+  const [
+    deleteHouse,
+    { isSuccess: isDelSuccess, isError: isDelError, error: delError },
+  ] = useDeleteHouseMutation();
 
   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [bedrooms, setBedrooms] = useState(0);
-  const [bathrooms, setBathrooms] = useState(0);
-  const [roomSize, setRoomSize] = useState("");
-  const [picture, setPicture] = useState("");
-  const [availabilityDate, setAvailabilityDate] = useState("");
-  const [rentPerMonth, setRentPerMonth] = useState(0);
-  const [phoneNumber, setPhoneNumber] = useState("+880");
-  const [description, setDescription] = useState("");
-  const [userId, setUserId] = useState(users[0].id);
+  const [name, setName] = useState(house.name);
+  const [address, setAddress] = useState(house.address);
+  const [city, setCity] = useState(house.city);
+  const [bedrooms, setBedrooms] = useState(house.bedrooms);
+  const [bathrooms, setBathrooms] = useState(house.bathrooms);
+  const [roomSize, setRoomSize] = useState(house.roomSize);
+  const [picture, setPicture] = useState(house.picture);
+  const [availabilityDate, setAvailabilityDate] = useState(
+    house.availabilityDate
+  );
+  const [rentPerMonth, setRentPerMonth] = useState(house.rentPerMonth);
+  const [phoneNumber, setPhoneNumber] = useState(house.phoneNumber);
+  const [description, setDescription] = useState(house.description);
 
   useEffect(() => {
-    if (isSuccess) {
-      setName("");
-      setAddress("");
-      setCity("");
-      setBedrooms(0);
-      setBathrooms(0);
-      setRoomSize("");
-      setPicture("");
-      setAvailabilityDate("");
-      setRentPerMonth(0);
-      setPhoneNumber("+880");
-      setDescription("");
-      setUserId("");
+    if (isSuccess || isDelSuccess) {
       navigate("/dash/houses");
     }
-  }, [isSuccess, navigate]);
+  }, [isSuccess, isDelSuccess, navigate]);
 
   const onNameChanged = (e) => setName(e.target.value);
   const onAddressChanged = (e) => setAddress(e.target.value);
@@ -51,12 +47,10 @@ const NewHouseForm = ({ users }) => {
   const onRentPerMonthChanged = (e) => setRentPerMonth(Number(e.target.value));
   const onPhoneNumberChanged = (e) => setPhoneNumber(e.target.value);
   const onDescriptionChanged = (e) => setDescription(e.target.value);
-  const onUserIdChanged = (e) => setUserId(e.target.value);
 
   const canSave =
     [
       name,
-      userId,
       address,
       city,
       bedrooms,
@@ -72,21 +66,8 @@ const NewHouseForm = ({ users }) => {
   const onSaveHouseClicked = async (e) => {
     e.preventDefault();
     if (canSave) {
-      // await addNewHouse({
-      //   name,
-      //   address,
-      //   city,
-      //   bedrooms,
-      //   bathrooms,
-      //   roomSize,
-      //   picture,
-      //   availabilityDate,
-      //   rentPerMonth,
-      //   phoneNumber,
-      //   description,
-      // });
-      console.log({
-        user: userId,
+      await updateHouse({
+        id: house.id,
         name,
         address,
         city,
@@ -102,49 +83,24 @@ const NewHouseForm = ({ users }) => {
     }
   };
 
-  const options = users.map((user) => {
-    return (
-      <option key={user.id} value={user.id}>
-        {" "}
-        {user.email}
-      </option>
-    );
-  });
+  const onDeleteHouseClicked = async () => {
+    await deleteHouse({ id: house.id });
+  };
 
-  const errClass = isError ? "text-red-500" : "hidden";
+  const errClass = isError || isDelError ? "errmsg" : "offscreen";
 
   return (
-    <div className="flex items-center justify-center mt-32">
-      <div className="w-full max-w-md">
+    <div className="flex items-center justify-center mt-8">
+      <div className="w-full max-w-lg">
         <form
-          className="bg-white shadow-md rounded px-8 py-6"
+          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
           onSubmit={onSaveHouseClicked}
         >
-          <h2 className="text-2xl font-bold mb-6 text-center">Add New House</h2>
-
-          <div className="mb-4">
-            <label className="block font-semibold mb-2" htmlFor="userEmail">
-              *
-            </label>
-            <select
-              id="userEmail"
-              name="userEmail"
-              className="w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              multiple={false}
-              size="1"
-              value={userId}
-              onChange={onUserIdChanged}
-            >
-              <option value="" disabled>
-                Select Your Email
-              </option>
-              {options}
-            </select>
-          </div>
+          <h2 className="text-2xl font-bold mb-6 text-center">Edit House</h2>
 
           <div className="mb-4">
             <label className="block font-semibold mb-2" htmlFor="name">
-              Name<span className="text-red-500">*</span>
+              Name:
             </label>
             <input
               className="w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -153,13 +109,12 @@ const NewHouseForm = ({ users }) => {
               type="text"
               value={name}
               onChange={onNameChanged}
-              required
             />
           </div>
 
           <div className="mb-4">
             <label className="block font-semibold mb-2" htmlFor="address">
-              Address<span className="text-red-500">*</span>
+              Address:
             </label>
             <input
               className="w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -168,13 +123,12 @@ const NewHouseForm = ({ users }) => {
               type="text"
               value={address}
               onChange={onAddressChanged}
-              required
             />
           </div>
 
           <div className="mb-4">
             <label className="block font-semibold mb-2" htmlFor="city">
-              City<span className="text-red-500">*</span>
+              City:
             </label>
             <input
               className="w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -183,13 +137,12 @@ const NewHouseForm = ({ users }) => {
               type="text"
               value={city}
               onChange={onCityChanged}
-              required
             />
           </div>
 
           <div className="mb-4">
             <label className="block font-semibold mb-2" htmlFor="bedrooms">
-              Bedrooms<span className="text-red-500">*</span>
+              Bedrooms:
             </label>
             <input
               className="w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -198,13 +151,12 @@ const NewHouseForm = ({ users }) => {
               type="number"
               value={bedrooms}
               onChange={onBedroomsChanged}
-              required
             />
           </div>
 
           <div className="mb-4">
             <label className="block font-semibold mb-2" htmlFor="bathrooms">
-              Bathrooms<span className="text-red-500">*</span>
+              Bathrooms:
             </label>
             <input
               className="w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -213,13 +165,12 @@ const NewHouseForm = ({ users }) => {
               type="number"
               value={bathrooms}
               onChange={onBathroomsChanged}
-              required
             />
           </div>
 
           <div className="mb-4">
             <label className="block font-semibold mb-2" htmlFor="roomSize">
-              Room Size<span className="text-red-500">*</span>
+              Room Size:
             </label>
             <input
               className="w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -228,13 +179,12 @@ const NewHouseForm = ({ users }) => {
               type="text"
               value={roomSize}
               onChange={onRoomSizeChanged}
-              required
             />
           </div>
 
           <div className="mb-4">
             <label className="block font-semibold mb-2" htmlFor="picture">
-              Picture<span className="text-red-500">*</span>
+              Picture:
             </label>
             <input
               className="w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -243,7 +193,6 @@ const NewHouseForm = ({ users }) => {
               type="text"
               value={picture}
               onChange={onPictureChanged}
-              required
             />
           </div>
 
@@ -252,7 +201,7 @@ const NewHouseForm = ({ users }) => {
               className="block font-semibold mb-2"
               htmlFor="availabilityDate"
             >
-              Availability Date<span className="text-red-500">*</span>
+              Availability Date:
             </label>
             <input
               className="w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -261,13 +210,12 @@ const NewHouseForm = ({ users }) => {
               type="date"
               value={availabilityDate}
               onChange={onAvailabilityDateChanged}
-              required
             />
           </div>
 
           <div className="mb-4">
             <label className="block font-semibold mb-2" htmlFor="rentPerMonth">
-              Rent Per Month<span className="text-red-500">*</span>
+              Rent Per Month:
             </label>
             <input
               className="w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -276,58 +224,55 @@ const NewHouseForm = ({ users }) => {
               type="number"
               value={rentPerMonth}
               onChange={onRentPerMonthChanged}
-              required
             />
           </div>
 
           <div className="mb-4">
             <label className="block font-semibold mb-2" htmlFor="phoneNumber">
-              Phone Number<span className="text-red-500">*</span>
+              Phone Number:
             </label>
-            <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">
-                +880
-              </span>
-              <input
-                className="w-full border border-gray-300 py-2 pl-14 pr-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                id="phoneNumber"
-                name="phoneNumber"
-                type="tel"
-                pattern="[0-9]{10}"
-                value={phoneNumber.replace("+880", "")}
-                onChange={onPhoneNumberChanged}
-                required
-              />
-            </div>
+            <input
+              className="w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              id="phoneNumber"
+              name="phoneNumber"
+              type="text"
+              value={phoneNumber}
+              onChange={onPhoneNumberChanged}
+            />
           </div>
 
           <div className="mb-4">
             <label className="block font-semibold mb-2" htmlFor="description">
-              Description<span className="text-red-500">*</span>
+              Description:
             </label>
             <textarea
               className="w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               id="description"
               name="description"
-              rows="3"
+              rows={4}
               value={description}
               onChange={onDescriptionChanged}
-              required
             ></textarea>
           </div>
 
           <p className={`text-red-500 text-sm ${errClass}`}>
-            {error?.data?.message}
+            {error?.data?.message ?? delError?.data?.message}
           </p>
 
-          <div className="flex justify-center mt-6">
+          <div className="flex justify-center">
             <button
               className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${
                 !canSave && "opacity-50 cursor-not-allowed"
               }`}
               disabled={!canSave}
             >
-              Add House
+              Save
+            </button>
+            <button
+              className="ml-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              onClick={onDeleteHouseClicked}
+            >
+              Delete
             </button>
           </div>
         </form>
@@ -336,4 +281,4 @@ const NewHouseForm = ({ users }) => {
   );
 };
 
-export default NewHouseForm;
+export default EditHouseForm;

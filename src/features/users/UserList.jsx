@@ -30,7 +30,7 @@ const UsersList = () => {
         <thead className="table__thead">
           <tr>
             <th scope="col" className="table__th user__username">
-              Username
+              User Mail
             </th>
             <th scope="col" className="table__th user__roles">
               Roles
